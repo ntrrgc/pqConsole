@@ -53,7 +53,7 @@ PREDICATE(create_object, 2) {
     QString name = t2w(PL_A1);
     pqConsole::gui_run([&](){
        if (int id = QMetaType::type(name.toUtf8()))
-           obj = QMetaType::construct(id);  // calls default constructor here
+           obj = QMetaType::create(id);  // calls default constructor here
     });
     if (obj)
         return PL_A2 = obj;
@@ -153,7 +153,7 @@ PREDICATE(pq_method, 4) {
             for (int i = 0; i < meta->methodCount(); ++i) {
                 QMetaMethod m = meta->method(i);
                 if (m.methodType() == m.Method && m.access() == m.Public) {
-                    QString sig = m.signature();
+                    QString sig = m.methodSignature();
                     if (sig.left(sig.indexOf('(')) == Member) {
                         QVariantList vl;
                         QList<QGenericArgument> va;
@@ -185,7 +185,7 @@ PREDICATE(pq_method, 4) {
                                     vl.append(l);
                                 } else if (vt == QMetaType::VoidStar ||
                                            vt == QMetaType::QObjectStar ||
-                                           vt == QMetaType::QWidgetStar ||
+                                           vt == qMetaTypeId<QWidget*>() ||
                                            vt >= QMetaType::User) {
                                     VP p = Arg;
                                     vl.append(QVariant(vt, &p));
