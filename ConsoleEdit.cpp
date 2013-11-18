@@ -161,6 +161,8 @@ void ConsoleEdit::setup() {
 
     connect(this, SIGNAL(sig_run_function(pfunc)), this, SLOT(run_function(pfunc)));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
+
+    fixedPosition = 0;
 }
 
 /** strict control on keyboard events required
